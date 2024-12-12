@@ -16,13 +16,11 @@ internal class MockRebateDataStore : IRebateDataStore
 
     public Rebate GetRebate(string rebateIdentifier)
     {
-        // Access database to retrieve account, code removed for brevity
-        return _rebates[rebateIdentifier]; // allowing this to error if the key is not found as this is not the focus of the test.
+        return _rebates[rebateIdentifier];
     }
 
-    public void StoreCalculationResult(Rebate account, decimal rebateAmount) // account param probably shouldn't be type Rebate
+    public void StoreCalculationResult(Rebate account, decimal rebateAmount)
     {
-        // Update account in database, code removed for brevity
     }
 
     public List<Rebate> GetRebatesSupportedByProduct(Product product)

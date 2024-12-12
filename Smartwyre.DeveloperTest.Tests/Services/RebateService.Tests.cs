@@ -1,3 +1,5 @@
+using Smartwyre.DeveloperTest.Calculator;
+using Smartwyre.DeveloperTest.Calculator.Strategies;
 using Smartwyre.DeveloperTest.Services;
 using Smartwyre.DeveloperTest.Services.Interfaces;
 using Smartwyre.DeveloperTest.Tests.Mocks;
@@ -12,7 +14,12 @@ public class RebateServiceTests
 
     public RebateServiceTests()
     {
-        _rebateService = new RebateService(new MockProductDataStore(), new MockRebateDataStore());
+        var rebateCalculator = new RebateCalculator([
+            new FixedCashAmountRebateStrategy(), 
+            new FixedRateRebateStrategy(), 
+            new AmountPerUomRebateStrategy()]);
+
+        _rebateService = new RebateService(new MockProductDataStore(), new MockRebateDataStore(), rebateCalculator);
     }
 
     [Fact]

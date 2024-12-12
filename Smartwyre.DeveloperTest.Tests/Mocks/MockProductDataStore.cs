@@ -16,8 +16,7 @@ internal class MockProductDataStore : IProductDataStore
 
     public Product GetProduct(string productIdentifier)
     {
-        // Access database to retrieve account, code removed for brevity 
-        return _products[productIdentifier]; // allowing this to error if the key is not found as this is not the focus of the test.
+        return _products[productIdentifier];
     }
 
     public List<Product> GetAllProducts()

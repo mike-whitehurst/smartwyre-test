@@ -1,4 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Smartwyre.DeveloperTest.Calculator;
+using Smartwyre.DeveloperTest.Calculator.Interfaces;
+using Smartwyre.DeveloperTest.Calculator.Strategies;
+using Smartwyre.DeveloperTest.Calculator.Strategies.Interfaces;
 using Smartwyre.DeveloperTest.Data;
 using Smartwyre.DeveloperTest.Data.Interfaces;
 using Smartwyre.DeveloperTest.Services;
@@ -23,6 +27,10 @@ class Program
             .AddScoped<IRebateService, RebateService>()
             .AddScoped<IProductDataStore, ProductDataStore>()
             .AddScoped<IRebateDataStore, RebateDataStore>()
+            .AddScoped<IRebateStrategy, FixedCashAmountRebateStrategy>()
+            .AddScoped<IRebateStrategy, FixedRateRebateStrategy>()
+            .AddScoped<IRebateStrategy, AmountPerUomRebateStrategy>()
+            .AddScoped<IRebateCalculator, RebateCalculator>()
             .BuildServiceProvider();
 
         return serviceProvider;
