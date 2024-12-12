@@ -15,8 +15,6 @@ public class RebateService : IRebateService
 
         var result = new CalculateRebateResult();
 
-        var rebateAmount = 0m;
-
         switch (rebate.Incentive)
         {
             case IncentiveType.FixedCashAmount:
@@ -34,7 +32,7 @@ public class RebateService : IRebateService
                 }
                 else
                 {
-                    rebateAmount = rebate.Amount;
+                    result.RebateAmount = rebate.Amount;
                     result.Success = true;
                 }
                 break;
@@ -58,7 +56,7 @@ public class RebateService : IRebateService
                 }
                 else
                 {
-                    rebateAmount += product.Price * rebate.Percentage * request.Volume;
+                    result.RebateAmount = product.Price * rebate.Percentage * request.Volume;
                     result.Success = true;
                 }
                 break;
@@ -82,7 +80,10 @@ public class RebateService : IRebateService
                 }
                 else
                 {
-                    rebateAmount += rebate.Amount * request.Volume;
+                    // TODO: review bugs
+                    // potential bug: increments rebate amount but this is only happens once.
+                    // potential bug: incentive should be per uom but this is per volume.
+                    result.RebateAmount += rebate.Amount * request.Volume;
                     result.Success = true;
                 }
                 break;
@@ -91,7 +92,7 @@ public class RebateService : IRebateService
         if (result.Success)
         {
             var storeRebateDataStore = new RebateDataStore();
-            storeRebateDataStore.StoreCalculationResult(rebate, rebateAmount);
+            storeRebateDataStore.StoreCalculationResult(rebate, result.RebateAmount);
         }
 
         return result;
