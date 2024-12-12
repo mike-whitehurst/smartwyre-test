@@ -22,7 +22,7 @@ public class RebateService : IRebateService
                 {
                     result.Success = false;
                 }
-                else if (!product.SupportedIncentives.HasFlag(SupportedIncentiveType.FixedCashAmount))
+                else if (!product.SupportedIncentiveTypes.Contains(IncentiveType.FixedCashAmount))
                 {
                     result.Success = false;
                 }
@@ -46,7 +46,7 @@ public class RebateService : IRebateService
                 {
                     result.Success = false;
                 }
-                else if (!product.SupportedIncentives.HasFlag(SupportedIncentiveType.FixedRateRebate))
+                else if (!product.SupportedIncentiveTypes.Contains(IncentiveType.FixedRateRebate))
                 {
                     result.Success = false;
                 }
@@ -70,7 +70,7 @@ public class RebateService : IRebateService
                 {
                     result.Success = false;
                 }
-                else if (!product.SupportedIncentives.HasFlag(SupportedIncentiveType.AmountPerUom))
+                else if (!product.SupportedIncentiveTypes.Contains(IncentiveType.AmountPerUom))
                 {
                     result.Success = false;
                 }
