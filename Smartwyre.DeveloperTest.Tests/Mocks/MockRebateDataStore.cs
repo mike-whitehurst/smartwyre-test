@@ -3,9 +3,9 @@ using Smartwyre.DeveloperTest.Types;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Smartwyre.DeveloperTest.Data;
+namespace Smartwyre.DeveloperTest.Tests.Mocks;
 
-public class RebateDataStore : IRebateDataStore
+internal class MockRebateDataStore : IRebateDataStore
 {
     private readonly Dictionary<string, Rebate> _rebates = new()
     {
@@ -32,3 +32,4 @@ public class RebateDataStore : IRebateDataStore
             .ToList();
     }
 }
+

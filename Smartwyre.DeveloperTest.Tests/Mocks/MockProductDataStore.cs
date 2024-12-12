@@ -3,16 +3,15 @@ using Smartwyre.DeveloperTest.Types;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Smartwyre.DeveloperTest.Data;
+namespace Smartwyre.DeveloperTest.Tests.Mocks;
 
-public class ProductDataStore : IProductDataStore
+internal class MockProductDataStore : IProductDataStore
 {
     private readonly Dictionary<string, Product> _products = new()
     {
         { "product1", new Product(){ Identifier = "product1", Price = 7m, SupportedIncentiveTypes = [IncentiveType.FixedCashAmount] } },
         { "product2", new Product(){ Identifier = "product2", Price = 16m, SupportedIncentiveTypes = [IncentiveType.FixedRateRebate] } },
         { "product3", new Product(){ Identifier = "product3", Price = 25m, SupportedIncentiveTypes = [IncentiveType.AmountPerUom] } },
-        { "product4", new Product(){ Identifier = "product4", Price = 1m, SupportedIncentiveTypes = [IncentiveType.FixedCashAmount, IncentiveType.FixedRateRebate, IncentiveType.AmountPerUom] } },
     };
 
     public Product GetProduct(string productIdentifier)
@@ -26,3 +25,4 @@ public class ProductDataStore : IProductDataStore
         return _products.Values.ToList();
     }
 }
+

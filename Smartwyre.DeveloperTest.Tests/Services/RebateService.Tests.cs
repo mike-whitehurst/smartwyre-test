@@ -1,16 +1,18 @@
 using Smartwyre.DeveloperTest.Services;
+using Smartwyre.DeveloperTest.Services.Interfaces;
+using Smartwyre.DeveloperTest.Tests.Mocks;
 using Smartwyre.DeveloperTest.Types;
 using Xunit;
 
-namespace Smartwyre.DeveloperTest.Tests;
+namespace Smartwyre.DeveloperTest.Tests.Services;
 
 public class RebateServiceTests
 {
-    readonly RebateService _rebateService;
+    readonly IRebateService _rebateService;
 
     public RebateServiceTests()
     {
-        _rebateService = new RebateService();
+        _rebateService = new RebateService(new MockProductDataStore(), new MockRebateDataStore());
     }
 
     [Fact]
