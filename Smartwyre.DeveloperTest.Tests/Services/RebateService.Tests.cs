@@ -1,8 +1,8 @@
-using Smartwyre.DeveloperTest.Calculator;
-using Smartwyre.DeveloperTest.Calculator.Strategies;
+using Moq;
+using Smartwyre.DeveloperTest.Calculator.Interfaces;
+using Smartwyre.DeveloperTest.Data.Interfaces;
 using Smartwyre.DeveloperTest.Services;
 using Smartwyre.DeveloperTest.Services.Interfaces;
-using Smartwyre.DeveloperTest.Tests.Mocks;
 using Smartwyre.DeveloperTest.Types;
 using Xunit;
 
@@ -11,59 +11,72 @@ namespace Smartwyre.DeveloperTest.Tests.Services;
 public class RebateServiceTests
 {
     readonly IRebateService _rebateService;
+    private Mock<IProductDataStore> _mockProductDataStore;
+    private Mock<IRebateDataStore> _mockRebateDataStore;
+    private Mock<IRebateCalculator> _mockRebateCalculator;
 
     public RebateServiceTests()
     {
-        var rebateCalculator = new RebateCalculator([
-            new FixedCashAmountRebateStrategy(), 
-            new FixedRateRebateStrategy(), 
-            new AmountPerUomRebateStrategy()]);
+        _mockProductDataStore = new Mock<IProductDataStore>();
+        _mockRebateDataStore = new Mock<IRebateDataStore>();
+        _mockRebateCalculator = new Mock<IRebateCalculator>();
 
-        _rebateService = new RebateService(new MockProductDataStore(), new MockRebateDataStore(), rebateCalculator);
+        _rebateService = new RebateService(_mockProductDataStore.Object, _mockRebateDataStore.Object, _mockRebateCalculator.Object);
     }
 
     [Fact]
-    public void Calculate_FixedCashAmount()
+    public void Calculate_Success_Calls_StoreCalculationResult()
     {
         // Assemble
         var request = new CalculateRebateRequest("rebate1", "product1", 100);
 
+        _mockRebateDataStore
+            .Setup(x => x.GetRebate("rebate1"))
+            .Returns(new Rebate() { Identifier = "rebate1", Incentive = IncentiveType.FixedCashAmount, Amount = 50m });
+
+        _mockProductDataStore
+            .Setup(x => x.GetProduct("product1"))
+            .Returns(new Product() { Identifier = "product1", Price = 7m, SupportedIncentiveTypes = [IncentiveType.FixedCashAmount] });
+
+        _mockRebateCalculator
+           .Setup(x => x.CalculateRebate(It.IsAny<CalculateRebateRequest>(), It.IsAny<Rebate>(), It.IsAny<Product>()))
+           .Returns(new CalculateRebateResult() { Success = true, RebateAmount = 123 });
+
         // Act
         var result = _rebateService.Calculate(request);
 
         // Assert
         Assert.NotNull(result);
         Assert.True(result.Success);
-        Assert.Equal(50, result.RebateAmount);
+        Assert.Equal(123, result.RebateAmount);
+        _mockRebateDataStore.Verify(x => x.StoreCalculationResult(It.IsAny<Rebate>(), 123), Times.Once);
     }
 
     [Fact]
-    public void Calculate_FixedRateRebate()
+    public void Calculate_Failure_DoesNotCall_StoreCalculationResult()
     {
         // Assemble
-        var request = new CalculateRebateRequest("rebate2", "product2", 200);
+        var request = new CalculateRebateRequest("rebate1", "product1", 100);
+
+        _mockRebateDataStore
+            .Setup(x => x.GetRebate("rebate1"))
+            .Returns(new Rebate() { Identifier = "rebate1", Incentive = IncentiveType.FixedCashAmount, Amount = 50m });
+
+        _mockProductDataStore
+            .Setup(x => x.GetProduct("product1"))
+            .Returns(new Product() { Identifier = "product1", Price = 7m, SupportedIncentiveTypes = [IncentiveType.FixedCashAmount] });
+
+        _mockRebateCalculator
+           .Setup(x => x.CalculateRebate(It.IsAny<CalculateRebateRequest>(), It.IsAny<Rebate>(), It.IsAny<Product>()))
+           .Returns(new CalculateRebateResult() { Success = false, RebateAmount = 0m });
 
         // Act
         var result = _rebateService.Calculate(request);
 
         // Assert
         Assert.NotNull(result);
-        Assert.True(result.Success);
-        Assert.Equal(48_000, result.RebateAmount);
-    }
-
-    [Fact]
-    public void Calculate_AmountPerUom()
-    {
-        // Assemble
-        var request = new CalculateRebateRequest("rebate3", "product3", 300);
-
-        // Act
-        var result = _rebateService.Calculate(request);
-
-        // Assert
-        Assert.NotNull(result);
-        Assert.True(result.Success);
-        Assert.Equal(1500, result.RebateAmount);
+        Assert.False(result.Success);
+        Assert.Equal(0m, result.RebateAmount);
+        _mockRebateDataStore.Verify(x => x.StoreCalculationResult(It.IsAny<Rebate>(), 123), Times.Never);
     }
 }
