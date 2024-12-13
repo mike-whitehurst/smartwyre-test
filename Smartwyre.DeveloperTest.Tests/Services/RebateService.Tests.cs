@@ -40,14 +40,14 @@ public class RebateServiceTests
 
         _mockRebateCalculator
            .Setup(x => x.CalculateRebate(It.IsAny<CalculateRebateRequest>(), It.IsAny<Rebate>(), It.IsAny<Product>()))
-           .Returns(new CalculateRebateResult() { Success = true, RebateAmount = 123 });
+           .Returns(new CalculateRebateResult() { IsSuccessful = true, RebateAmount = 123 });
 
         // Act
         var result = _rebateService.Calculate(request);
 
         // Assert
         Assert.NotNull(result);
-        Assert.True(result.Success);
+        Assert.True(result.IsSuccessful);
         Assert.Equal(123, result.RebateAmount);
         _mockRebateDataStore.Verify(x => x.StoreCalculationResult(It.IsAny<Rebate>(), 123), Times.Once);
     }
@@ -68,14 +68,14 @@ public class RebateServiceTests
 
         _mockRebateCalculator
            .Setup(x => x.CalculateRebate(It.IsAny<CalculateRebateRequest>(), It.IsAny<Rebate>(), It.IsAny<Product>()))
-           .Returns(new CalculateRebateResult() { Success = false, RebateAmount = 0m });
+           .Returns(new CalculateRebateResult() { IsSuccessful = false, RebateAmount = 0m });
 
         // Act
         var result = _rebateService.Calculate(request);
 
         // Assert
         Assert.NotNull(result);
-        Assert.False(result.Success);
+        Assert.False(result.IsSuccessful);
         Assert.Equal(0m, result.RebateAmount);
         _mockRebateDataStore.Verify(x => x.StoreCalculationResult(It.IsAny<Rebate>(), 123), Times.Never);
     }

@@ -9,30 +9,18 @@ public class AmountPerUnitRebateStrategy : IRebateStrategy
 
     public CalculateRebateResult CalculateRebate(CalculateRebateRequest request, Rebate rebate, Product product)
     {
-        var result = new CalculateRebateResult();
-
-        if (rebate == null)
+        if (rebate.Amount <= 0)
         {
-            result.Success = false;
-        }
-        else if (product == null)
-        {
-            result.Success = false;
-        }
-        else if (!product.SupportedIncentiveTypes.Contains(IncentiveType.AmountPerUnit))
-        {
-            result.Success = false;
-        }
-        else if (rebate.Amount == 0 || request.Volume == 0)
-        {
-            result.Success = false;
-        }
-        else
-        {
-            result.RebateAmount = rebate.Amount * request.Volume;
-            result.Success = true;
+            return CalculateRebateResult.Failure("Amount must be greater than zero");
         }
 
-        return result;
+        if (request.Volume <= 0)
+        {
+            return CalculateRebateResult.Failure("Volume must be greater than zero");
+        }
+        
+        var amount = rebate.Amount * request.Volume;
+
+        return CalculateRebateResult.Success(amount);
     }
 }

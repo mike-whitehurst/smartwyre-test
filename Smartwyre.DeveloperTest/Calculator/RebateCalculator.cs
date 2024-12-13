@@ -18,6 +18,26 @@ public class RebateCalculator : IRebateCalculator
 
     public CalculateRebateResult CalculateRebate(CalculateRebateRequest request, Rebate rebate, Product product)
     {
+        if (request == null)
+        {
+            return CalculateRebateResult.Failure("Request must not be null");
+        }
+
+        if (rebate == null)
+        {
+            return CalculateRebateResult.Failure("Rebate must not be null");
+        }
+
+        if (product == null)
+        {
+            return CalculateRebateResult.Failure("Product must not be null");
+        }
+
+        if (!product.SupportedIncentiveTypes.Contains(rebate.Incentive))
+        {
+            return CalculateRebateResult.Failure("Product does not support this incentive");
+        }
+
         var strategy = _strategies.FirstOrDefault(s => s.IncentiveType == rebate.Incentive)
             ?? throw new InvalidOperationException($"No strategy found for type {rebate.Incentive}");
 

@@ -69,7 +69,7 @@ namespace Smartwyre.DeveloperTest.Runner
 
             Console.WriteLine();
             var result = _rebateService.Calculate(new CalculateRebateRequest(selectedRebate.Identifier, selectedProduct.Identifier, selectedVolume));
-            Console.WriteLine($"Result: Success: {result.Success}, RebateAmount: {result.RebateAmount}."); // currency?
+            Console.WriteLine($"Result: Success: {result.IsSuccessful}, RebateAmount: {result.RebateAmount}."); // currency?
         }
 
         private static bool CalculateAgain()

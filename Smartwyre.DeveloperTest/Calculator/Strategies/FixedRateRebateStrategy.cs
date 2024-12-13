@@ -9,30 +9,23 @@ public class FixedRateRebateStrategy : IRebateStrategy
 
     public CalculateRebateResult CalculateRebate(CalculateRebateRequest request, Rebate rebate, Product product)
     {
-        var result = new CalculateRebateResult();
-
-        if (rebate == null)
+        if (product.Price <= 0)
         {
-            result.Success = false;
-        }
-        else if (product == null)
-        {
-            result.Success = false;
-        }
-        else if (!product.SupportedIncentiveTypes.Contains(IncentiveType.FixedRate))
-        {
-            result.Success = false;
-        }
-        else if (rebate.Percentage == 0 || product.Price == 0 || request.Volume == 0)
-        {
-            result.Success = false;
-        }
-        else
-        {
-            result.RebateAmount = product.Price * rebate.Percentage * request.Volume;
-            result.Success = true;
+            return CalculateRebateResult.Failure("Price must be greater than zero");
         }
 
-        return result;
+        if (rebate.Percentage <= 0)
+        {
+            return CalculateRebateResult.Failure("Percentage must be greater than zero");
+        }
+
+        if (request.Volume <= 0)
+        {
+            return CalculateRebateResult.Failure("Volume must be greater than zero");
+        }
+
+        var amount = product.Price * rebate.Percentage * request.Volume;
+
+        return CalculateRebateResult.Success(amount);
     }
 }
