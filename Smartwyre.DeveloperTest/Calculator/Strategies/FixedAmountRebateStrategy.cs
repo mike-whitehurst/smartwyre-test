@@ -11,16 +11,29 @@ public class FixedAmountRebateStrategy : IRebateStrategy
     {
         var result = new CalculateRebateResult();
 
-        if (rebate == null)
+        if (request == null)
         {
+            result.FailureReason = "Request must not be null";
+            result.Success = false;
+        }
+        else if (rebate == null)
+        {
+            result.FailureReason = "Rebate must not be null";
+            result.Success = false;
+        }
+        else if (product == null)
+        {
+            result.FailureReason = "Product must not be null";
             result.Success = false;
         }
         else if (!product.SupportedIncentiveTypes.Contains(IncentiveType.FixedAmount))
         {
+            result.FailureReason = "Product does not support this incentive";
             result.Success = false;
         }
-        else if (rebate.Amount == 0)
+        else if (rebate.Amount <= 0)
         {
+            result.FailureReason = "Amount must be greater than zero";
             result.Success = false;
         }
         else
