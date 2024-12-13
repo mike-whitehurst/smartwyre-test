@@ -1,3 +1,15 @@
+# Evidence
+
+## Console Output
+![Image of console output](/images/console-output.png?raw=true)
+
+## Tests Pass
+![Image of tests passing](/images/tests-pass.png?raw=true)
+
+## Coverage
+![Image of coverage](/images/coverage.png?raw=true)
+
+
 # Smartwyre Developer Test Instructions
 
 In the 'RebateService.cs' file you will find a method for calculating a rebate. At a high level the steps for calculating a rebate are:
