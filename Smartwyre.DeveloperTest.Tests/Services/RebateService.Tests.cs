@@ -32,11 +32,11 @@ public class RebateServiceTests
 
         _mockRebateDataStore
             .Setup(x => x.GetRebate("rebate1"))
-            .Returns(new Rebate() { Identifier = "rebate1", Incentive = IncentiveType.FixedCashAmount, Amount = 50m });
+            .Returns(new Rebate() { Identifier = "rebate1", Incentive = IncentiveType.FixedAmount, Amount = 50m });
 
         _mockProductDataStore
             .Setup(x => x.GetProduct("product1"))
-            .Returns(new Product() { Identifier = "product1", Price = 7m, SupportedIncentiveTypes = [IncentiveType.FixedCashAmount] });
+            .Returns(new Product() { Identifier = "product1", Price = 7m, SupportedIncentiveTypes = [IncentiveType.FixedAmount] });
 
         _mockRebateCalculator
            .Setup(x => x.CalculateRebate(It.IsAny<CalculateRebateRequest>(), It.IsAny<Rebate>(), It.IsAny<Product>()))
@@ -60,11 +60,11 @@ public class RebateServiceTests
 
         _mockRebateDataStore
             .Setup(x => x.GetRebate("rebate1"))
-            .Returns(new Rebate() { Identifier = "rebate1", Incentive = IncentiveType.FixedCashAmount, Amount = 50m });
+            .Returns(new Rebate() { Identifier = "rebate1", Incentive = IncentiveType.FixedAmount, Amount = 50m });
 
         _mockProductDataStore
             .Setup(x => x.GetProduct("product1"))
-            .Returns(new Product() { Identifier = "product1", Price = 7m, SupportedIncentiveTypes = [IncentiveType.FixedCashAmount] });
+            .Returns(new Product() { Identifier = "product1", Price = 7m, SupportedIncentiveTypes = [IncentiveType.FixedAmount] });
 
         _mockRebateCalculator
            .Setup(x => x.CalculateRebate(It.IsAny<CalculateRebateRequest>(), It.IsAny<Rebate>(), It.IsAny<Product>()))

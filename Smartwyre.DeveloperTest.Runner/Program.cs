@@ -27,9 +27,9 @@ class Program
             .AddScoped<IRebateService, RebateService>()
             .AddScoped<IProductDataStore, ProductDataStore>()
             .AddScoped<IRebateDataStore, RebateDataStore>()
-            .AddScoped<IRebateStrategy, FixedCashAmountRebateStrategy>()
+            .AddScoped<IRebateStrategy, FixedAmountRebateStrategy>()
             .AddScoped<IRebateStrategy, FixedRateRebateStrategy>()
-            .AddScoped<IRebateStrategy, AmountPerUomRebateStrategy>()
+            .AddScoped<IRebateStrategy, AmountPerUnitRebateStrategy>()
             .AddScoped<IRebateCalculator, RebateCalculator>()
             .BuildServiceProvider();
 

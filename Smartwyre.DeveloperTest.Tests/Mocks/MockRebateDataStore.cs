@@ -9,9 +9,9 @@ internal class MockRebateDataStore : IRebateDataStore
 {
     private readonly Dictionary<string, Rebate> _rebates = new()
     {
-        { "rebate1", new Rebate(){ Identifier = "rebate1", Incentive = IncentiveType.FixedCashAmount, Amount = 50m } },
-        { "rebate2", new Rebate(){ Identifier = "rebate2", Incentive = IncentiveType.FixedRateRebate, Percentage = 15m } },
-        { "rebate3", new Rebate(){ Identifier = "rebate3", Incentive = IncentiveType.AmountPerUom, Amount = 5m } },
+        { "rebate1", new Rebate(){ Identifier = "rebate1", Incentive = IncentiveType.FixedAmount, Amount = 50m } },
+        { "rebate2", new Rebate(){ Identifier = "rebate2", Incentive = IncentiveType.FixedRate, Percentage = 15m } },
+        { "rebate3", new Rebate(){ Identifier = "rebate3", Incentive = IncentiveType.AmountPerUnit, Amount = 5m } },
     };
 
     public Rebate GetRebate(string rebateIdentifier)

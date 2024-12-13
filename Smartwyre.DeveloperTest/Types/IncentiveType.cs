@@ -2,7 +2,7 @@
 
 public enum IncentiveType
 {
-    FixedRateRebate,
-    AmountPerUom,
-    FixedCashAmount
+    FixedAmount,
+    FixedRate,
+    AmountPerUnit,
 }

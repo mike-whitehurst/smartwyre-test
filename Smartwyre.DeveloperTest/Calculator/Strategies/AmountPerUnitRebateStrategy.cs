@@ -3,9 +3,9 @@ using Smartwyre.DeveloperTest.Types;
 
 namespace Smartwyre.DeveloperTest.Calculator.Strategies;
 
-public class AmountPerUomRebateStrategy : IRebateStrategy
+public class AmountPerUnitRebateStrategy : IRebateStrategy
 {
-    public IncentiveType IncentiveType { get; private set; } = IncentiveType.AmountPerUom;
+    public IncentiveType IncentiveType { get; private set; } = IncentiveType.AmountPerUnit;
 
     public CalculateRebateResult CalculateRebate(CalculateRebateRequest request, Rebate rebate, Product product)
     {
@@ -19,7 +19,7 @@ public class AmountPerUomRebateStrategy : IRebateStrategy
         {
             result.Success = false;
         }
-        else if (!product.SupportedIncentiveTypes.Contains(IncentiveType.AmountPerUom))
+        else if (!product.SupportedIncentiveTypes.Contains(IncentiveType.AmountPerUnit))
         {
             result.Success = false;
         }
@@ -29,10 +29,7 @@ public class AmountPerUomRebateStrategy : IRebateStrategy
         }
         else
         {
-            // TODO: review bugs
-            // potential bug: increments rebate amount but this is only happens once.
-            // potential bug: incentive should be per uom but this is per volume.
-            result.RebateAmount += rebate.Amount * request.Volume;
+            result.RebateAmount = rebate.Amount * request.Volume;
             result.Success = true;
         }
 

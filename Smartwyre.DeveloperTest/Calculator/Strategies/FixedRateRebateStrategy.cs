@@ -5,7 +5,7 @@ namespace Smartwyre.DeveloperTest.Calculator.Strategies;
 
 public class FixedRateRebateStrategy : IRebateStrategy
 {
-    public IncentiveType IncentiveType { get; private set; } = IncentiveType.FixedRateRebate;
+    public IncentiveType IncentiveType { get; private set; } = IncentiveType.FixedRate;
 
     public CalculateRebateResult CalculateRebate(CalculateRebateRequest request, Rebate rebate, Product product)
     {
@@ -19,7 +19,7 @@ public class FixedRateRebateStrategy : IRebateStrategy
         {
             result.Success = false;
         }
-        else if (!product.SupportedIncentiveTypes.Contains(IncentiveType.FixedRateRebate))
+        else if (!product.SupportedIncentiveTypes.Contains(IncentiveType.FixedRate))
         {
             result.Success = false;
         }
